@@ -242,39 +242,6 @@ const AdminPage = () => {
         </div>
       </div>
 
-      <div className="h-screen overflow-y-scroll w-full mx-auto px-4">
-        <h1 className="text-center font-bold mb-4">Users</h1>
-        <table className="table table-dark table-hover w-full table-responsive">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Lastname</th>
-              <th>Email</th>
-              <th>Ticket</th>
-              <th>TicketCount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ticketsUsers.map((ticketUser) => {
-              const ticket = tickets.find((t) => t.id === ticketUser.Ticket);
-              return (
-                <tr key={ticketUser.id}>
-                  <td>{ticketUser.Name}</td>
-                  <td>{ticketUser.LastName}</td>
-                  <td>{ticketUser.Email}</td>
-                  <td>
-                    {ticket
-                      ? `${ticket.from} - ${ticket.to}`
-                      : "Ticket not found"}
-                  </td>
-                  <td>{ticketUser.TicketCount}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
       <div className="h-auto overflow-y-scroll w-full mx-auto">
         <h1 className="text-center font-bold mb-6">Ticket</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full mx-auto items-start">
@@ -311,6 +278,36 @@ const AdminPage = () => {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="h-auto overflow-y-scroll w-full mx-auto">
+        <h1 className="text-center font-bold mb-4">Users</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full mx-auto items-start">
+          {ticketsUsers.map((ticketUser) => {
+            const ticket = tickets.find((t) => t.id === ticketUser.Ticket);
+            return (
+              <div
+                key={ticketUser.id}
+                className="bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl shadow-xl p-6 transform transition duration-300 hover:scale-105"
+              >
+                <div className="mb-6">
+                  <h2 className="text-2xl font-semibold">
+                    {ticketUser.Name} - {ticketUser.LastName}
+                  </h2>
+                  <span className="text-lg">
+                    {ticket
+                      ? `${ticket.from} - ${ticket.to}`
+                      : "Ticket not found"}
+                  </span>
+                </div>
+                <div className=" mb-4">
+                  <p>Email: {ticketUser.Email}</p>
+                  <p>TicketCount: {ticketUser.TicketCount}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
