@@ -21,6 +21,7 @@ const BuyTicketPage = () => {
     ticketCount: 1,
   });
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [ticketPurchased, setTicketPurchased] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const BuyTicketPage = () => {
   const handleBuyClick = (ticketId: number) => {
     setSelectedId(ticketId);
     setShowForm(true);
+    setTicketPurchased(false);
   };
 
   const ChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +76,8 @@ const BuyTicketPage = () => {
       return;
     }
 
-    alert("Chipta muvaffaqiyatli sotib olindi!");
+    // Ticket successfully purchased
+    setTicketPurchased(true);
 
     const { error: updateError } = await supabase
       .from("AvtoTicket")
@@ -94,29 +97,42 @@ const BuyTicketPage = () => {
 
   if (selectedTicket.length === 0) {
     return (
-      <p className="text-center mt-32 text-xl text-gray-500">
-        Chipta topilmadi
-      </p>
+      <div>
+        <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
+          <div className="max-w-7xl mx-auto flex items-center justify-start py-4 px-6">
+            <div
+              className="text-gray-900 text-3xl font-bold hover:cursor-pointer"
+              onClick={() => (location.href = "/")}
+            >
+              <span className="text-red-600">Auto</span>Ticket
+            </div>
+          </div>
+        </nav>
+        <div className="flex justify-center items-center flex-col mt-32">
+          <p className="text-center text-xl text-gray-500">
+            Hozircha chipta mavjud emas. Iltimos, keyinroq qaytib keling.
+          </p>
+          <button
+            onClick={() => (location.href = "/")}
+            className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition duration-300"
+          >
+            Bosh Sahifaga qaytish
+          </button>
+        </div>
+      </div>
     );
   }
 
   return (
     <div>
       <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-start py-4 px-6">
           <div
             className="text-gray-900 text-3xl font-bold hover:cursor-pointer"
             onClick={() => (location.href = "/home")}
           >
             <span className="text-red-600">Auto</span>Ticket
           </div>
-
-          <button
-            onClick={() => (location.href = "/admin")}
-            className="bg-red-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300"
-          >
-            Admin Page
-          </button>
         </div>
       </nav>
 
@@ -149,7 +165,7 @@ const BuyTicketPage = () => {
       </div>
 
       {showForm && (
-        <div className="mt-6 max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+        <div className="mt-6 max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-center text-xl font-bold mb-4">
             Ma&apos;lumotlarni kiriting
           </h2>
@@ -193,6 +209,15 @@ const BuyTicketPage = () => {
           >
             Tasdiqlash
           </button>
+        </div>
+      )}
+
+      {ticketPurchased && (
+        <div className="mt-6 max-w-md mx-auto bg-green-100 p-6 rounded-lg shadow-md">
+          <h2 className="text-center text-xl font-bold text-green-600">
+            Chipta muvaffaqiyatli sotib olindi!
+          </h2>
+          <p className="text-center mt-2">Barcha ma'lumotlar tasdiqlandi.</p>
         </div>
       )}
     </div>

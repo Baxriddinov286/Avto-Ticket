@@ -6,6 +6,7 @@ import { createClient } from "@/supabase/client";
 
 const AdminPage = () => {
   const [tickets, setTickets] = useState<Array<any>>([]);
+  const [ticketsUsers, setTicketsUsers] = useState<Array<any>>([]);
   const [from, setFromCity] = useState<string>("");
   const [to, setToCity] = useState<string>("");
   const [price, setPrice] = useState<string>("");
@@ -23,8 +24,17 @@ const AdminPage = () => {
       setTickets(data);
     }
   };
-
   fetchTickets();
+
+  const fetchTicketUsers = async () => {
+    const { data, error } = await supabase.from("TicketUsers").select("*");
+    if (error) {
+      console.error("Error fetching tickets:", error);
+    } else {
+      setTicketsUsers(data);
+    }
+  };
+  fetchTicketUsers();
 
   const createTicket = async () => {
     if (!from || !to || !price || !count || !time || !date) {
@@ -95,7 +105,7 @@ const AdminPage = () => {
   return (
     <div>
       <ToastContainer />
-      <nav className="bg-gradient-to-r from-gray-800 via-gray-900 to-black p-3 shadow-lg fixed w-full top-0 left-0 z-50">
+      <nav className="bg-gradient-to-r from-gray-800 via-gray-900 to-black p-3 shadow-lg w-full">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div
             className="text-white text-3xl font-bold hover:cursor-pointer"
@@ -114,7 +124,7 @@ const AdminPage = () => {
         </div>
       </nav>
 
-      <div className="h-screen w-full mt-10 pt-20 p-4 flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-700">
+      <div className="h-screen w-full pt-20 p-4 flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-700">
         <div className="bg-black w-full max-w-lg p-8 rounded-3xl shadow-2xl">
           <h1 className="text-4xl font-bold text-center text-white mb-6">
             Admin Panel
@@ -229,40 +239,69 @@ const AdminPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-[1518.9] mx-auto">
-        {tickets.map((ticket: any) => (
-          <div
-            key={ticket.id}
-            className="bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl shadow-xl p-6 transform transition duration-300 hover:scale-105"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold">
-                {ticket.from} - {ticket.to}
-              </h2>
-              <span className="text-lg">
-                {ticket.date} <br /> {ticket.time}
-              </span>
+      {/* <div className="h-screen overflow-y-scroll w-[1518.9] mx-auto">
+        <h1 className="text-center font-bold">Users</h1>
+        <table className="tabel table-dark table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Ticket</th>
+              <th>TicketCount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ticketsUsers.map((ticketUser) => (
+              <tr key={ticketUser.id}>
+                <td>{ticketUser.Name}</td>
+                <td>{ticketUser.LastName}</td>
+                <td>{ticketUser.Email}</td>
+                <td>{ticketUser.Ticket}</td>
+                <td>{ticketUser.TicketCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div> */}
+
+      <div className="h-screen overflow-y-scroll w-[1518.9] mx-auto">
+        <h1 className="text-center font-bold">Ticket</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full mx-auto items-start">
+          {tickets.map((ticket: any) => (
+            <div
+              key={ticket.id}
+              className="bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl shadow-xl p-6 transform transition duration-300 hover:scale-105"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold">
+                  {ticket.from} - {ticket.to}
+                </h2>
+                <span className="text-lg">
+                  {ticket.date} <br /> {ticket.time}
+                </span>
+              </div>
+              <div className="flex justify-between items-center mb-4">
+                <p>Chipta Narxi: {ticket.price} so'm</p>
+                <p>Chipta Soni: {ticket.count}</p>
+              </div>
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => editTicket(ticket)}
+                  className="bg-gradient-to-r from-yellow-500 to-yellow-600 px-4 py-2 text-white rounded-md shadow-lg hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-500 transition duration-300"
+                >
+                  Tahrirlash
+                </button>
+                <button
+                  onClick={() => deleteTicket(ticket.id)}
+                  className="bg-gradient-to-r from-red-500 to-red-600 px-4 py-2 text-white rounded-md shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 transition duration-300"
+                >
+                  O'chirish
+                </button>
+              </div>
             </div>
-            <div className="flex justify-between items-center mb-4">
-              <p>Chipta Narxi: {ticket.price} so'm</p>
-              <p>Chipta Soni: {ticket.count}</p>
-            </div>
-            <div className="flex justify-between items-center">
-              <button
-                onClick={() => editTicket(ticket)}
-                className="bg-gradient-to-r from-yellow-500 to-yellow-600 px-4 py-2 text-white rounded-md shadow-lg hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-500 transition duration-300"
-              >
-                Tahrirlash
-              </button>
-              <button
-                onClick={() => deleteTicket(ticket.id)}
-                className="bg-gradient-to-r from-red-500 to-red-600 px-4 py-2 text-white rounded-md shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 transition duration-300"
-              >
-                O'chirish
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
