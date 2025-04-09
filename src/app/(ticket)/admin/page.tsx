@@ -105,7 +105,7 @@ const AdminPage = () => {
   return (
     <div>
       <ToastContainer />
-      <nav className="bg-gradient-to-r from-gray-800 via-gray-900 to-black p-3 shadow-lg w-full">
+      <nav className="bg-gradient-to-r from-gray-800 via-gray-900 to-black p-4 shadow-lg w-full">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div
             className="text-white text-3xl font-bold hover:cursor-pointer"
@@ -124,7 +124,7 @@ const AdminPage = () => {
         </div>
       </nav>
 
-      <div className="h-screen w-full pt-20 p-4 flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-700">
+      <div className="h-auto w-full pt-16 p-6 flex items-center justify-center bg-gradient-to-b from-gray-900 to-gray-700">
         <div className="bg-black w-full max-w-lg p-8 rounded-3xl shadow-2xl">
           <h1 className="text-4xl font-bold text-center text-white mb-6">
             Admin Panel
@@ -239,34 +239,8 @@ const AdminPage = () => {
         </div>
       </div>
 
-      {/* <div className="h-screen overflow-y-scroll w-[1518.9] mx-auto">
-        <h1 className="text-center font-bold">Users</h1>
-        <table className="tabel table-dark table-hover">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Lastname</th>
-              <th>Email</th>
-              <th>Ticket</th>
-              <th>TicketCount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ticketsUsers.map((ticketUser) => (
-              <tr key={ticketUser.id}>
-                <td>{ticketUser.Name}</td>
-                <td>{ticketUser.LastName}</td>
-                <td>{ticketUser.Email}</td>
-                <td>{ticketUser.Ticket}</td>
-                <td>{ticketUser.TicketCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
-
-      <div className="h-screen overflow-y-scroll w-[1518.9] mx-auto">
-        <h1 className="text-center font-bold">Ticket</h1>
+      <div className="h-auto overflow-y-scroll w-full mx-auto">
+        <h1 className="text-center font-bold mb-6">Ticket</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full mx-auto items-start">
           {tickets.map((ticket: any) => (
             <div
@@ -308,3 +282,31 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+
+{
+  /* <div className="h-screen overflow-y-scroll w-[1518.9] mx-auto">
+        <h1 className="text-center font-bold">Users</h1>
+        <table className="tabel table-dark table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Ticket</th>
+              <th>TicketCount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ticketsUsers.map((ticketUser) => (
+              <tr key={ticketUser.id}>
+                <td>{ticketUser.Name}</td>
+                <td>{ticketUser.LastName}</td>
+                <td>{ticketUser.Email}</td>
+                <td>{ticketUser.Ticket}</td>
+                <td>{ticketUser.TicketCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div> */
+}
