@@ -16,6 +16,11 @@ const AdminPage = () => {
   const [editingTicket, setEditingTicket] = useState<any | null>(null);
   const supabase = createClient();
 
+  useEffect(() => {
+    fetchTicketUsers();
+    fetchTickets();
+  }, []);
+
   const fetchTickets = async () => {
     const { data, error } = await supabase.from("AvtoTicket").select("*");
     if (error) {
@@ -24,7 +29,6 @@ const AdminPage = () => {
       setTickets(data);
     }
   };
-  fetchTickets();
 
   const fetchTicketUsers = async () => {
     const { data, error } = await supabase.from("TicketUsers").select("*");
@@ -34,7 +38,6 @@ const AdminPage = () => {
       setTicketsUsers(data);
     }
   };
-  fetchTicketUsers();
 
   const createTicket = async () => {
     if (!from || !to || !price || !count || !time || !date) {
@@ -239,6 +242,39 @@ const AdminPage = () => {
         </div>
       </div>
 
+      <div className="h-screen overflow-y-scroll w-full mx-auto px-4">
+        <h1 className="text-center font-bold mb-4">Users</h1>
+        <table className="table table-dark table-hover w-full table-responsive">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Ticket</th>
+              <th>TicketCount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ticketsUsers.map((ticketUser) => {
+              const ticket = tickets.find((t) => t.id === ticketUser.Ticket);
+              return (
+                <tr key={ticketUser.id}>
+                  <td>{ticketUser.Name}</td>
+                  <td>{ticketUser.LastName}</td>
+                  <td>{ticketUser.Email}</td>
+                  <td>
+                    {ticket
+                      ? `${ticket.from} - ${ticket.to}`
+                      : "Ticket not found"}
+                  </td>
+                  <td>{ticketUser.TicketCount}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
       <div className="h-auto overflow-y-scroll w-full mx-auto">
         <h1 className="text-center font-bold mb-6">Ticket</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full mx-auto items-start">
@@ -282,31 +318,3 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
-
-{
-  /* <div className="h-screen overflow-y-scroll w-[1518.9] mx-auto">
-        <h1 className="text-center font-bold">Users</h1>
-        <table className="tabel table-dark table-hover">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Lastname</th>
-              <th>Email</th>
-              <th>Ticket</th>
-              <th>TicketCount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ticketsUsers.map((ticketUser) => (
-              <tr key={ticketUser.id}>
-                <td>{ticketUser.Name}</td>
-                <td>{ticketUser.LastName}</td>
-                <td>{ticketUser.Email}</td>
-                <td>{ticketUser.Ticket}</td>
-                <td>{ticketUser.TicketCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */
-}
